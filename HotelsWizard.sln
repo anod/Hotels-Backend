@@ -3,7 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelsWizard", "HotelsWizard\HotelsWizard.csproj", "{4CAEEB98-1C31-474E-A4AC-439F7D0C9DFF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{45E73E77-97F2-457C-9F93-A1F3EC232932}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4EA32E07-34BD-4C65-AB54-4B575CD7B80B}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "HotelsWizard", "src\HotelsWizard\HotelsWizard.xproj", "{3837E568-AC9E-4AAD-8DED-733319E3E47D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +18,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4CAEEB98-1C31-474E-A4AC-439F7D0C9DFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4CAEEB98-1C31-474E-A4AC-439F7D0C9DFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4CAEEB98-1C31-474E-A4AC-439F7D0C9DFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4CAEEB98-1C31-474E-A4AC-439F7D0C9DFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3837E568-AC9E-4AAD-8DED-733319E3E47D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3837E568-AC9E-4AAD-8DED-733319E3E47D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3837E568-AC9E-4AAD-8DED-733319E3E47D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3837E568-AC9E-4AAD-8DED-733319E3E47D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3837E568-AC9E-4AAD-8DED-733319E3E47D} = {45E73E77-97F2-457C-9F93-A1F3EC232932}
 	EndGlobalSection
 EndGlobal
