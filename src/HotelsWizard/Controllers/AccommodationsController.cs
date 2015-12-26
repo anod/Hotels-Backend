@@ -7,7 +7,7 @@ using Microsoft.AspNet.Mvc;
 namespace HotelsWizard.Controllers
 {
     [Route("api/[controller]")]
-    public class AccommodationsController : Controller
+    public class AccommodationsController : JsonController
     {
         // GET: api/accommodation
         [HttpGet]
