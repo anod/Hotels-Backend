@@ -17,6 +17,7 @@ namespace HotelsWizard.Controllers
         {
             Search response = new Search();
             response.meta = new Meta();
+            response.meta.StatusCode = 200;
 
             return response;
         }

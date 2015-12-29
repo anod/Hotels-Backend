@@ -7,39 +7,39 @@ namespace HotelsWizard.Models.Response
     public class Meta
     {
 
-        public int statusCode;
+        public int StatusCode;
 
-        public int totalNrOverall;
+        public int TotalNrOverall;
 
-        public int totalNr;
+        public int TotalNr;
 
-        public int limit;
+        public int Limit;
 
-        public int offset;
+        public int Offset;
 
-        public String clientCurrency;
+        public String ClientCurrency;
 
-        public int errorCode;
+        public int ErrorCode;
 
-        public String errorMessage;
+        public String ErrorMessage;
 
-        public FilterNumbers filterNrs;
+        public FilterNumbers FilterNrs;
 
-        public Price priceFrom;
+        public Price PriceFrom;
 
-        public Price priceTo;
+        public Price PriceTo;
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("[Code] ");
-            sb.Append(statusCode);
-            if (errorCode > 0)
+            sb.Append(StatusCode);
+            if (ErrorCode > 0)
             {
                 sb.Append("[Error] ");
-                sb.Append(errorCode);
+                sb.Append(ErrorCode);
                 sb.Append(" ");
-                sb.Append(errorMessage);
+                sb.Append(ErrorMessage);
             }
             return sb.ToString();
         }
@@ -47,15 +47,15 @@ namespace HotelsWizard.Models.Response
         public class FilterNumbers
         {
             // TODO: format issue public List<Integer> stars;
-            public Dictionary<int, int> rating;
-            public Dictionary<int, int> accType;
-            public Dictionary<int, int> facilities;
+            public Dictionary<int, int> Rating;
+            public Dictionary<int, int> AccType;
+            public Dictionary<int, int> Facilities;
         }
 
         public class Price
         {
-            public Dictionary<string, double> totalNetRate;
-            public Dictionary<string, double> displayPrice;
+            public Dictionary<string, double> TotalNetRate;
+            public Dictionary<string, double> DisplayPrice;
         }
     }
 }
