@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 
+using HotelsWizard.Models.Response;
+
 namespace HotelsWizard.Controllers
 {
     [Route("api/[controller]")]
@@ -11,9 +13,12 @@ namespace HotelsWizard.Controllers
     {
         // GET: api/accommodation
         [HttpGet]
-        public IEnumerable<string> Get()
+        public Search Get()
         {
-            return new string[] { "accommodation1", "accommodation2" };
+            Search response = new Search();
+            response.meta = new Meta();
+
+            return response;
         }
 
         // GET api/accommodation/5

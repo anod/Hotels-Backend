@@ -1,13 +1,14 @@
+using System;
 using System.Collections.Generic;
 
 namespace HotelsWizard.Models.Response
 {
-    public class Search
+    /**
+     * @author user
+     * @date 2015-09-06
+     */
+    public class Error
     {
-
         public Meta meta;
-
-        public List<Accommodation> accommodations = new List<Accommodation>();
     }
-
 }

@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 
-namespace HotelsWizard.Models
+namespace HotelsWizard.Models.Response
 {
     public class Meta
     {
