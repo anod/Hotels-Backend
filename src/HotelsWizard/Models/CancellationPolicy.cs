@@ -12,8 +12,8 @@ namespace HotelsWizard.Models
 
         public class Penalty
         {
-            int Type;
-            int Value;
+            public int Type;
+            public int Value;
         }
     }
 
