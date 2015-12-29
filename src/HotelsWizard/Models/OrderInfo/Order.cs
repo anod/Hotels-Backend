@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
+using HotelsWizard.Models.AccInfo;
 
-namespace HotelsWizard.Models
+namespace HotelsWizard.Models.OrderInfo
 {
 /**
  * @author alex
  * @date 2015-04-28
  */
 public class Order {
-    public int orderId;
-    public Personal personal;
-    public Payment payment;
-    public List<Rate> rates;
+    public int OrderId;
+    public Personal Personal;
+    public Payment Payment;
+    public List<Rate> Rates;
 
     public class Rate {
         public int accommodationId;

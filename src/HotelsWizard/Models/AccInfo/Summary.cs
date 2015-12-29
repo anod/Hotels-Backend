@@ -1,4 +1,4 @@
-namespace HotelsWizard.Models
+namespace HotelsWizard.Models.AccInfo
 {
     public class Summary
     {

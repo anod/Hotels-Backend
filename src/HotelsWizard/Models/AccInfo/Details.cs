@@ -5,31 +5,19 @@ namespace HotelsWizard.Models.AccInfo
 
     public class Details {
 
-        public string generalDescription;
-        public string importantInfo;
-        public string location;
-        public string publicTransportation;
-        public string checkInFrom;
-        public string checkInUntil;
-        public string checkOutFrom;
-        public string checkOutUntil;
-        public string checkInTime;
-        public string checkOutTime;
-        public int nrOfRooms;
-        public PetsPolicy petsPolicy;
-        public List<PostPaidCreditCard> postpaidCreditCards;
-
-        public class PetsPolicy {
-            public int petsAllowed;
-            public bool petsAllowedOnRequest;
-            public string petsSurcharge;
-
-            public PetsPolicy() {
-                this.petsAllowed = 0;
-                this.petsAllowedOnRequest = false;
-                this.petsSurcharge = "";
-            }
-        }
+        public string GeneralDescription;
+        public string ImportantInfo;
+        public string Location;
+        public string PublicTransportation;
+        public string CheckInFrom;
+        public string CheckInUntil;
+        public string CheckOutFrom;
+        public string CheckOutUntil;
+        public string CheckInTime;
+        public string CheckOutTime;
+        public int NrOfRooms;
+        public PetsPolicy PetsPolicy;
+        public List<PostPaidCreditCard> PostpaidCreditCards;
 
     }
     

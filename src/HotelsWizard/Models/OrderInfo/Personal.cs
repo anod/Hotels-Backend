@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using HotelsWizard.Models.Search;
-
-namespace HotelsWizard.Models
+namespace HotelsWizard.Models.OrderInfo
 {
     public class Personal
     {

@@ -1,3 +1,4 @@
+using HotelsWizard.Models.AccInfo;
 
 namespace HotelsWizard.Models.Response
 {
@@ -5,11 +6,11 @@ namespace HotelsWizard.Models.Response
      * @author alex
      * @date 2015-04-19
      */
-    public class Cancel
+    public class DetailsResponse
     {
 
         public Meta meta;
 
-        //    public Order order;
+        public Accommodation accommodation;
     }
 }

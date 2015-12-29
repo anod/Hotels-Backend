@@ -1,14 +1,15 @@
+
 namespace HotelsWizard.Models.Response
 {
     /**
      * @author alex
      * @date 2015-04-19
      */
-    public class Details
+    public class CancelResponse
     {
 
         public Meta meta;
 
-        public Accommodation accommodation;
+        //    public Order order;
     }
 }

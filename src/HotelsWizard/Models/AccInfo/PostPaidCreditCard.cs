@@ -3,13 +3,13 @@ namespace HotelsWizard.Models.AccInfo
 {
     public class PostPaidCreditCard
     {
-        public string name;
-        public string code;
+        public string Name;
+        public string Code;
 
         public PostPaidCreditCard(string name, string code)
         {
-            this.name = name;
-            this.code = code;
+            this.Name = name;
+            this.Code = code;
         }
     }
 

@@ -1,6 +1,5 @@
-using System;
 
-namespace HotelsWizard.Models
+namespace HotelsWizard.Models.OrderInfo
 {
     public class Payment
     {

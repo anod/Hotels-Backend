@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 
-namespace HotelsWizard.Models
+namespace HotelsWizard.Models.Request
 {
     /**
      * @author alex

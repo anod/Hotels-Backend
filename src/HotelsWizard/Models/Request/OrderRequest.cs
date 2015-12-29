@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using HotelsWizard.Models.Search;
+using HotelsWizard.Models.OrderInfo;
 
-namespace HotelsWizard.Models
+namespace HotelsWizard.Models.Request
 {
     /**
      * @author alex
@@ -11,12 +11,12 @@ namespace HotelsWizard.Models
     public class OrderRequest
     {
 
-        private string lang { get; set; }
-        private string currency { get; set; }
-        private string customerIP { get; set; }
-        private Personal personal { get; set; }
-        private Payment payment { get; set; }
-        private List<Rate> rates { get; set; }
+        private string Lang { get; set; }
+        private string Currency { get; set; }
+        private string CustomerIP { get; set; }
+        private Personal Personal { get; set; }
+        private Payment Payment { get; set; }
+        private List<Rate> Rates { get; set; }
 
         private OrderRequest()
         {
@@ -24,10 +24,10 @@ namespace HotelsWizard.Models
 
         private class Rate
         {
-            public String rateKey { get; set; }
-            public int rateCount { get; set; }
-            public List<String> beds { get; set; }
-            public String remarks { get; set; }
+            public String RateKey { get; set; }
+            public int RateCount { get; set; }
+            public List<String> Beds { get; set; }
+            public String Remarks { get; set; }
         }
 
         public class Builder
@@ -93,10 +93,10 @@ namespace HotelsWizard.Models
                     Rates = new List<Rate>();
                 }
                 Rate rate = new Rate();
-                rate.rateKey = rateKey;
-                rate.rateCount = rateCount;
-                rate.beds = beds;
-                rate.remarks = remarks;
+                rate.RateKey = rateKey;
+                rate.RateCount = rateCount;
+                rate.Beds = beds;
+                rate.Remarks = remarks;
                 Rates.Add(rate);
                 return this;
             }
@@ -116,12 +116,12 @@ namespace HotelsWizard.Models
             public OrderRequest Build()
             {
                 OrderRequest request = new OrderRequest();
-                request.lang = Lang;
-                request.currency = Currency;
-                request.customerIP = CustomerIP;
-                request.payment = Payment;
-                request.personal = Personal;
-                request.rates = Rates;
+                request.Lang = Lang;
+                request.Currency = Currency;
+                request.CustomerIP = CustomerIP;
+                request.Payment = Payment;
+                request.Personal = Personal;
+                request.Rates = Rates;
                 return request;
             }
 

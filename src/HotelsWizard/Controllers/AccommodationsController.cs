@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 
 using HotelsWizard.Models.Response;
+using HotelsWizard.Models.AccInfo;
 
 namespace HotelsWizard.Controllers
 {
@@ -13,9 +10,9 @@ namespace HotelsWizard.Controllers
     {
         // GET: api/accommodation
         [HttpGet]
-        public Search Get()
+        public SearchResponse Get()
         {
-            Search response = new Search();
+            SearchResponse response = new SearchResponse();
             response.meta = new Meta();
             response.meta.StatusCode = 200;
 

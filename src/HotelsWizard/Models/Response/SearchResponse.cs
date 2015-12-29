@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using HotelsWizard.Models.AccInfo;
 
 namespace HotelsWizard.Models.Response
 {
-    public class Search
+    public class SearchResponse
     {
 
         public Meta meta;
