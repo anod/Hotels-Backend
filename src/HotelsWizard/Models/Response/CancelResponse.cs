@@ -8,7 +8,7 @@ namespace HotelsWizard.Models.Response
     public class CancelResponse
     {
 
-        public Meta meta;
+        public Meta Meta;
 
         //    public Order order;
     }

@@ -10,12 +10,7 @@ namespace HotelsWizard.Models
         public DateTime From;
         public DateTime To;
         private int SelectState = RANGE_SET_NONE;
-
-        public DateRange()
-        {
-        }
-
-        // public DateRange(long fromMillis, long toMillis)
+         // public DateRange(long fromMillis, long toMillis)
         // {
         //     from = Calendar.getInstance(Locale.getDefault());
         //     to = Calendar.getInstance(Locale.getDefault());
@@ -34,13 +29,14 @@ namespace HotelsWizard.Models
             range.From = new DateTime();
             range.To = new DateTime();
             range.To.AddDays(1);
+            range.SelectState = RANGE_SET_NONE;
             return range;
         }
 
         public void Set(DateRange range)
         {
-            // from.setTimeInMillis(range.from.getTimeInMillis());
-            // to.setTimeInMillis(range.to.getTimeInMillis());
+            From = range.From;
+            To = range.To;
         }
 
         public void SetDay(DateTime day)

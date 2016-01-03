@@ -9,8 +9,8 @@ namespace HotelsWizard.Models.Response
     public class DetailsResponse
     {
 
-        public Meta meta;
+        public Meta Meta;
 
-        public Accommodation accommodation;
+        public Accommodation Accommodation;
     }
 }

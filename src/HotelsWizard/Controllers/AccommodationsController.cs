@@ -3,6 +3,7 @@ using Microsoft.AspNet.Mvc;
 using HotelsWizard.Models.Response;
 using HotelsWizard.Models.AccInfo;
 
+
 namespace HotelsWizard.Controllers
 {
     [Route("api/[controller]")]
@@ -12,12 +13,14 @@ namespace HotelsWizard.Controllers
         [HttpGet]
         public SearchResponse Get()
         {
-            SearchResponse response = new SearchResponse();
+            var response = new SearchResponse();
             response.meta = new Meta();
             response.meta.StatusCode = 200;
 
             return response;
         }
+
+
 
         // GET api/accommodation/5
         [HttpGet("{id}")]

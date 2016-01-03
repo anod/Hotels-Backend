@@ -6,6 +6,6 @@ namespace HotelsWizard.Models.Response
      */
     public class ErrorResponse
     {
-        public Meta meta;
+        public ErrorMeta Meta;
     }
 }

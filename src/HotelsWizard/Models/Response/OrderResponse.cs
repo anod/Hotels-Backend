@@ -9,9 +9,9 @@ namespace HotelsWizard.Models.Response
     public class OrderResponse
     {
 
-        public Meta meta;
+        public Meta Meta;
 
-        public OrderInfo.Order order;
+        public OrderInfo.Order Order;
     }
 
 }

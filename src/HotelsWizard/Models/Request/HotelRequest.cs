@@ -9,18 +9,18 @@ namespace HotelsWizard.Models.Request
     public class HotelRequest
     {
 
-        protected DateRange DateRange { get; set; }
-        protected int NumbersOfRooms { get; set; }
-        protected int NumberOfPersons { get; set; }
+        public DateRange DateRange { get; set; }
+        public int NumberOfRooms { get; set; }
+        public int NumberOfPersons { get; set; }
 
-        protected String Currency = "EUR";
-        protected string Language { get; set; }
-        private String CustomerCountryCode { get; set; }
+        public string Currency = "EUR";
+        public string Language { get; set; }
+        public String CustomerCountryCode { get; set; }
 
 
         public HotelRequest()
         {
-            NumbersOfRooms = 1;
+            NumberOfRooms = 1;
             NumberOfPersons = 2;
             DateRange = DateRange.getInstance();
         }

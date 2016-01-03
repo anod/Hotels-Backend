@@ -9,13 +9,13 @@ namespace HotelsWizard.Models.Search
      */
     public class Filter
     {
-        private Dictionary<int, bool> Stars { get; set; }
-        private Dictionary<int, bool> Rating { get; set; }
-        private Dictionary<int, bool> AccTypes { get; set; }
-        private Dictionary<int, bool> MainFacilities { get; set; }
+        public Dictionary<int, bool> Stars { get; set; }
+        public Dictionary<int, bool> Rating { get; set; }
+        public Dictionary<int, bool> AccTypes { get; set; }
+        public Dictionary<int, bool> MainFacilities { get; set; }
 
-        private int MinRate { get; set; }
-        private int MaxRate { get; set; }
+        public int MinRate { get; set; }
+        public int MaxRate { get; set; }
 
         public Filter()
         {
