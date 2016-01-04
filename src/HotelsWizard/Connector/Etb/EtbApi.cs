@@ -1,7 +1,5 @@
 
 using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Net.Http;
 
 using HotelsWizard.Models.Request;
@@ -10,13 +8,15 @@ using HotelsWizard.Models.Search;
 
 using HotelsWizard.Connector.Etb.Utils;
 
-using System;
 using System.Net;
-using System.Net.Http;
+using System.Threading.Tasks;
 using System.IO;
 //using System.Net.Http.Formatting;
 
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using Microsoft.AspNet.Http;
+using Microsoft.Extensions.Logging;
 
 namespace HotelsWizard.Connector.Etb
 {
@@ -36,29 +36,15 @@ namespace HotelsWizard.Connector.Etb
 
         private EtbApiConfig Config;
 
+        public ILogger Logger { get; set; }
+
         const string DATE_FORMAT = "yyyy-MM-dd";
-        //private SimpleDateFormat DateFormat = new SimpleDateFormat(, Locale.US);
 
-        // private Interceptor mRequestInterceptor = new Interceptor() {
-        //     @Override
-        //     public Response intercept(Chain chain) throws IOException {
-        //         Request request = chain.request();
-
-        //         HttpUrl url = request.httpUrl().newBuilder()
-        //                 .addQueryParameter("apiKey", mConfig.getApiKey())
-        //                 .addQueryParameter("campaignId", String.valueOf(mConfig.getCampaignId()))
-        //                 .build();
-
-
-        //         return chain.proceed(request.newBuilder().url(url).build());
-        //     }
-        // };
-
-        public EtbApi(String apiKey, int campaignId) : base((new EtbApiConfig(apiKey, campaignId), null)
+        public EtbApi(String apiKey, int campaignId) : this(new EtbApiConfig(apiKey, campaignId), null)
         {
         }
 
-        public EtbApi(EtbApiConfig config) : base(config, null)
+        public EtbApi(EtbApiConfig config) : this(config, null)
         {
         }
 
@@ -70,34 +56,30 @@ namespace HotelsWizard.Connector.Etb
         }
 
 
-        // private Service create(bool isSecure) {
-        //     Retrofit.Builder builder = new Retrofit.Builder()
-        //             .client(mHttpClient)
-        //             .addConverterFactory(GsonConverterFactory.create())
-        //             .baseUrl(isSecure ? mConfig.getSecureEndpoint() : mConfig.getEndpoint());
+        public async Task<SearchResponse> search(SearchRequest searchRequest) { 
+             return await search(searchRequest, 0);
+        }
 
-        //     Retrofit restAdapter = builder.build();
-
-        //     return restAdapter.create(Service.class);
-        // }
-
-        // public Call<ResultsResponse> results(SearchRequest searchRequest) throws InvalidParameterException {
-        //     return results(searchRequest, 0);
-        // }
-
-        public SearchResponse results(SearchRequest searchRequest, int offset)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="searchRequest"></param>
+        /// <param name="offset"></param>
+        /// <exception cref="ResponseException">Throws when no valid response found</exception>
+        /// <returns></returns>
+        public async Task<SearchResponse> search(SearchRequest searchRequest, int offset)
         {
 
-            StringDictionary query = new StringDictionary();
+            QueryCollection query = new QueryCollection();
 
             // Location
-            ContextType loc = searchRequest.Context;
-            if (loc == null)
+            var context = searchRequest.Context;
+            if (context == null)
             {
-                throw new InvalidParameterException();
+                throw new ArgumentException("Context canot be nul");
             }
-            query.Add("type", loc.Value);
-            query.Add("context", loc.GetContext());
+            query.Add("type", context.Value);
+            query.Add("context", context.GetContext());
 
             query.Add("currency", searchRequest.Currency);
             query.Add("language", searchRequest.Language);
@@ -159,6 +141,7 @@ namespace HotelsWizard.Connector.Etb
             var sort = searchRequest.SortType;
             if (sort != null)
             {
+                // TODO: do not use split
                 String[] sortStr = sort.Split('_');
                 query.Add("orderBy", sortStr[0]);
                 if (sortStr.Length > 1)
@@ -171,16 +154,46 @@ namespace HotelsWizard.Connector.Etb
 
             query.Add("customerCountryCode", searchRequest.CustomerCountryCode);
 
-            return request<SearchResponse>();
+            return await search(query);
         }
 
-        private async T request<T>(String path)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <exception cref="ResponseException">Throws when no valid response found</exception>
+        /// <returns></returns>
+        public async Task<SearchResponse> search(QueryCollection query)
+        {
+            query["apiKey"] = Config.ApiKey;
+            query["campaignId"] = Config.CampaignId.ToString();
+            return await request<SearchResponse>(PATH_SEARCH, query);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path"></param>
+        /// <param name="query"></param>
+        /// <exception cref="ResponseException">Throws when no valid response found</exception>
+        /// <returns></returns>
+        private async Task<T> request<T>(String path, IReadableStringCollection query)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Config.Endpoint);
                 client.DefaultRequestHeaders.Accept.Clear();
-                var response = await client.GetAsync(Config.Endpoint + path);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var requestUri = path + '?' + query.ToString();
+                if (Logger != null)
+                {
+                    Logger.LogInformation("[EtbApi] Request: {0}{1}",Config.Endpoint,requestUri);
+                }
+                var response = await client.GetAsync(requestUri);
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
@@ -189,6 +202,7 @@ namespace HotelsWizard.Connector.Etb
                     {
                         JsonSerializer serializer = new JsonSerializer();
                         T responseObject = serializer.Deserialize<T>(reader);
+
                         return responseObject;
                     }
                 }
@@ -209,15 +223,9 @@ namespace HotelsWizard.Connector.Etb
                     errorObject.Meta = new ErrorMeta((int)response.StatusCode, 0, "Generic error has occurred on the server.");
                     throw new ResponseException(errorObject);
                 }
-
-
             }
         }
 
-        interface IConnectorResult
-        {
-
-        }
 
         // public Call<DetailsResponse> details(int id, HotelRequest hotelRequest) {
         //     Service service = create(false);

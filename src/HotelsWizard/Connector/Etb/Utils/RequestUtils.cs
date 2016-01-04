@@ -18,7 +18,7 @@ namespace HotelsWizard.Connector.Etb.Utils
         {
             request.DateRange = dateRange;
             request.NumberOfPersons = persons;
-            request.NumbersOfRooms = rooms;
+            request.NumberOfRooms = rooms;
         }
 
         public static string capacity(int persons, int rooms)

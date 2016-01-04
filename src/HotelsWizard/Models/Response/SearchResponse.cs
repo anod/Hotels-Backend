@@ -3,7 +3,7 @@ using HotelsWizard.Models.AccInfo;
 
 namespace HotelsWizard.Models.Response
 {
-    public class SearchResponse
+    public class SearchResponse : ApiResponse
     {
 
         public Meta Meta;
