@@ -7,8 +7,10 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNet.Diagnostics;
 
 using Newtonsoft.Json.Serialization;
+using HotelsWizard.Connector;
 
 namespace HotelsWizard
 {
@@ -49,6 +51,14 @@ namespace HotelsWizard
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            if (env.IsDevelopment()) {
+            //    app.UseDeveloperExceptionPage();
+            } else {
+            //    app.UseDeveloperExceptionPage();
+
+            }
+           // app.UseMiddleware<RestExceptionHandlerMiddleware>();
 
             app.UseIISPlatformHandler();
 

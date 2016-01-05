@@ -7,6 +7,7 @@ using HotelsWizard.Models.Response;
 using HotelsWizard.Models.Search;
 
 using HotelsWizard.Connector.Etb.Utils;
+using HotelsWizard.Connector;
 
 using System.Net;
 using System.Threading.Tasks;
@@ -214,14 +215,14 @@ namespace HotelsWizard.Connector.Etb
                     {
                         JsonSerializer serializer = new JsonSerializer();
                         ErrorResponse errorObject = serializer.Deserialize<ErrorResponse>(reader);
-                        throw new ResponseException(errorObject);
+                        throw new RestException(errorObject);
                     }
                 }
                 else
                 {
                     ErrorResponse errorObject = new ErrorResponse();
                     errorObject.Meta = new ErrorMeta((int)response.StatusCode, 0, "Generic error has occurred on the server.");
-                    throw new ResponseException(errorObject);
+                    throw new RestException(errorObject);
                 }
             }
         }
