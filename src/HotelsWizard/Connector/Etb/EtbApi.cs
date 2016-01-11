@@ -26,8 +26,7 @@ namespace HotelsWizard.Connector.Etb
      * @author alex
      * @date 2015-04-19
      */
-    public class EtbApi
-    {
+    public class EtbApi : IConnector {
         const string PATH_ACCOMMODATIONS = "/v1/accommodations";
         const string PATH_SEARCH = PATH_ACCOMMODATIONS + "/results";
         const string PATH_ORDERS = "/v1/orders";
@@ -37,10 +36,14 @@ namespace HotelsWizard.Connector.Etb
 
         private EtbApiConfig Config;
 
-        public ILogger Logger { get; set; }
+        private ILogger _logger;
+        public ILogger Logger {
+            get { return _logger; }
+            set { _logger = value; }
+        }
 
         const string DATE_FORMAT = "yyyy-MM-dd";
-
+        
         public EtbApi(String apiKey, int campaignId) : this(new EtbApiConfig(apiKey, campaignId), null)
         {
         }
@@ -57,8 +60,8 @@ namespace HotelsWizard.Connector.Etb
         }
 
 
-        public async Task<SearchResponse> search(SearchRequest searchRequest) { 
-             return await search(searchRequest, 0);
+        public async Task<SearchResponse> Search(SearchRequest searchRequest) { 
+             return await Search(searchRequest, 0);
         }
 
         /// <summary>
@@ -68,10 +71,10 @@ namespace HotelsWizard.Connector.Etb
         /// <param name="offset"></param>
         /// <exception cref="ResponseException">Throws when no valid response found</exception>
         /// <returns></returns>
-        public async Task<SearchResponse> search(SearchRequest searchRequest, int offset)
+        public async Task<SearchResponse> Search(SearchRequest searchRequest, int offset)
         {
 
-            QueryCollection query = new QueryCollection();
+            var query = HotelsRequestToQuery(searchRequest);
 
             // Location
             var context = searchRequest.Context;
@@ -82,19 +85,6 @@ namespace HotelsWizard.Connector.Etb
             query.Add("type", context.Value);
             query.Add("context", context.GetContext());
 
-            query.Add("currency", searchRequest.Currency);
-            query.Add("language", searchRequest.Language);
-
-            // Availability
-            if (searchRequest.NumberOfPersons != 0 && searchRequest.NumberOfRooms != 0)
-            {
-                query.Add("capacity", RequestUtils.capacity(searchRequest.NumberOfPersons, searchRequest.NumberOfRooms));
-            }
-            if (searchRequest.DateRange != null)
-            {
-                query.Add("checkIn", searchRequest.DateRange.From.ToString(DATE_FORMAT));
-                query.Add("checkOut", searchRequest.DateRange.To.ToString(DATE_FORMAT));
-            }
 
             // Filters
             if (searchRequest.HaveFilter())
@@ -153,9 +143,8 @@ namespace HotelsWizard.Connector.Etb
 
             query.Add("metaFields", "all"); // full = This also includes the field filterNrs
 
-            query.Add("customerCountryCode", searchRequest.CustomerCountryCode);
 
-            return await search(query);
+            return await Search(query);
         }
 
 
@@ -165,7 +154,7 @@ namespace HotelsWizard.Connector.Etb
         /// <param name="query"></param>
         /// <exception cref="ResponseException">Throws when no valid response found</exception>
         /// <returns></returns>
-        public async Task<SearchResponse> search(QueryCollection query)
+        public async Task<SearchResponse> Search(QueryCollection query)
         {
             query["apiKey"] = Config.ApiKey;
             query["campaignId"] = Config.CampaignId.ToString();
@@ -228,22 +217,34 @@ namespace HotelsWizard.Connector.Etb
         }
 
 
-        // public Call<DetailsResponse> details(int id, HotelRequest hotelRequest) {
-        //     Service service = create(false);
-        //     ArrayMap<String, String> query = new ArrayMap<>();
-        //     query.put("capacity", RequestUtils.capacity(hotelRequest.getNumberOfPersons(), hotelRequest.getNumberOfRooms()));
-        //     if (hotelRequest.getDateRange() != null) {
-        //         query.put("checkIn", mDateFormat.format(hotelRequest.getDateRange().from.getTime()));
-        //         query.put("checkOut", mDateFormat.format(hotelRequest.getDateRange().to.getTime()));
-        //     }
-        //     query.put("currency", hotelRequest.getCurrency());
-        //     query.put("language", hotelRequest.getLanguage());
+        public async Task<DetailsResponse> Details(int id, HotelRequest hotelRequest) {
+            var query = HotelsRequestToQuery(hotelRequest);
+            return await Details(id, query);
+        }
 
-        //     query.put("customerCountryCode", hotelRequest.getCustomerCountryCode());
+        public async Task<DetailsResponse> Details(int id, QueryCollection query) {
+            query["apiKey"] = Config.ApiKey;
+            query["campaignId"] = Config.CampaignId.ToString();
+            return await request<DetailsResponse>(PATH_ACCOMMODATIONS + '/' + id, query);
+        }
 
-        //     return service.details(id, query);
-        // }
+        private QueryCollection HotelsRequestToQuery(HotelRequest request) {
+            QueryCollection query = new QueryCollection();
+            query.Add("currency", request.Currency);
+            query.Add("language", request.Language);
 
+            // Availability
+            if (request.NumberOfPersons != 0 && request.NumberOfRooms != 0) {
+                query.Add("capacity", RequestUtils.capacity(request.NumberOfPersons, request.NumberOfRooms));
+            }
+            if (request.DateRange != null) {
+                query.Add("checkIn", request.DateRange.From.ToString(DATE_FORMAT));
+                query.Add("checkOut", request.DateRange.To.ToString(DATE_FORMAT));
+            }
+            query.Add("customerCountryCode", request.CustomerCountryCode);
+
+            return query;
+        }
         // public Call<OrderResponse> order(OrderRequest request) {
         //     Service service = create(true);
         //     return service.order(request);

@@ -11,6 +11,7 @@ using Microsoft.AspNet.Diagnostics;
 
 using Newtonsoft.Json.Serialization;
 using HotelsWizard.Connector;
+using HotelsWizard.Connector.Etb;
 
 namespace HotelsWizard
 {
@@ -40,9 +41,11 @@ namespace HotelsWizard
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
+            services.AddTransient<IConnector, EtbApiConnector>();
+
             services.AddMvc().AddJsonOptions(options =>
             {
-                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.ContractResolver = new RestContractResolver();
             });
         }
 

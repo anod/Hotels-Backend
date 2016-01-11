@@ -81,7 +81,7 @@ namespace HotelsWizard.Connector.Etb.Utils
             }
             set
             {
-                Store.Add(key, value);
+                Store[key] = value;
             }
         }
 
