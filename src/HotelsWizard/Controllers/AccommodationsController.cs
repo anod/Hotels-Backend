@@ -9,14 +9,8 @@ using HotelsWizard.Connector;
 
 namespace HotelsWizard.Controllers {
     [Route("api/[controller]")]
-    public class AccommodationsController : JsonController {
-        private ILogger<AccommodationsController> Logger;
-        private IConnector Connector;
-        public AccommodationsController(ILogger<AccommodationsController> logger, IConnector connector) {
-            Logger = logger;
-            Connector = connector;
-            Connector.Logger = Logger;
-        }
+    public class AccommodationsController : RestController {
+        public AccommodationsController(ILogger<AccommodationsController> logger, IConnector connector) : base(logger, connector) { }
         // GET: api/accommodation
         [HttpGet]
         public async Task<JsonResult> Get() {            
@@ -25,10 +19,7 @@ namespace HotelsWizard.Controllers {
                 var response = await Connector.Search(query);
                 return new JsonResult(response);
             } catch (RestException ex) {
-                var error = ex.Error;
-                var result = new JsonResult(error);
-                result.StatusCode = error.Meta.StatusCode;
-                return result;
+                return RestError(ex.Error);
             }
 
         }
@@ -41,12 +32,20 @@ namespace HotelsWizard.Controllers {
                 var response = await Connector.Details(id,query);
                 return new JsonResult(response);
             } catch (RestException ex) {
-                var error = ex.Error;
-                var result = new JsonResult(error);
-                result.StatusCode = error.Meta.StatusCode;
-                return result;
+                return RestError(ex.Error);
             }
         }
 
+        // GET api/accommodation/5/rates
+        [HttpGet("{id}/rates")]
+        public async Task<JsonResult> GetRates(int id) {
+            var query = new QueryCollection(Request.Query);
+            try {
+                var response = await Connector.Rates(id, query);
+                return new JsonResult(response);
+            } catch (RestException ex) {
+                return RestError(ex.Error);
+            }
+        }
     }
 }

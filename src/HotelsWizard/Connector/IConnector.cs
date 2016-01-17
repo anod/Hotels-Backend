@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 
 namespace HotelsWizard.Connector
 {
-    public interface IConnector
-    {
+    public interface IConnector {
         ILogger Logger { set; get; }
 
         Task<SearchResponse> Search(SearchRequest searchRequest);
@@ -19,5 +18,11 @@ namespace HotelsWizard.Connector
 
         Task<DetailsResponse> Details(int id, HotelRequest hotelRequest);
         Task<DetailsResponse> Details(int id, QueryCollection query);
+
+        Task<RatesResponse> Rates(int id, HotelRequest hotelRequest);
+        Task<RatesResponse> Rates(int id, QueryCollection query);
+
+        Task<OrderResponse> Retrieve(String confirmationId, String password);
+        Task<OrderResponse> Retrieve(int orderId, String password);
     }
 }

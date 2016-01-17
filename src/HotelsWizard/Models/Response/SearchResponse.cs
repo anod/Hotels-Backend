@@ -6,7 +6,7 @@ namespace HotelsWizard.Models.Response
     public class SearchResponse : ApiResponse
     {
 
-        public Meta Meta;
+        public SearchMeta Meta;
 
         public List<Accommodation> Accommodations = new List<Accommodation>();
     }
