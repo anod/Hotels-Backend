@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HotelsWizard.Connector
@@ -21,6 +22,9 @@ namespace HotelsWizard.Connector
 
         Task<RatesResponse> Rates(int id, HotelRequest hotelRequest);
         Task<RatesResponse> Rates(int id, QueryCollection query);
+
+        Task<OrderResponse> Order(OrderRequest request);
+        Task<OrderResponse> Order(HttpContent request);
 
         Task<OrderResponse> Retrieve(String confirmationId, String password);
         Task<OrderResponse> Retrieve(int orderId, String password);

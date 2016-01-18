@@ -16,6 +16,7 @@ using System.IO;
 
 using Microsoft.Extensions.Logging;
 using HotelsWizard.Connector.Rest;
+using Newtonsoft.Json;
 
 namespace HotelsWizard.Connector.Etb
 {
@@ -201,10 +202,16 @@ namespace HotelsWizard.Connector.Etb
             return query;
         }
 
-        //public async Task<OrderResponse> Order(OrderRequest request) {
-        //     Service service = create(true);
-        //     return service.order(request);
-        //}
+        public async Task<OrderResponse> Order(OrderRequest request) {
+            return await Order(new JsonContent(request));
+        }
+
+        public async Task<OrderResponse> Order(HttpContent request) {
+            QueryCollection query = new QueryCollection();
+            query["apiKey"] = Config.ApiKey;
+            query["campaignId"] = Config.CampaignId.ToString();
+            return await RestClient.Post<OrderResponse>(PATH_ORDERS, query, request);
+        }
 
         //public async Task<CancelResponse> Cancel(CancelRequest request, String orderId, String rateId) {
         //     Sasync ervice service = create(true);

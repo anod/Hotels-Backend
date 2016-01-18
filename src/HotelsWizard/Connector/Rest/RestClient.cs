@@ -17,8 +17,9 @@ namespace HotelsWizard.Connector.Rest
 {
     public class RestClient
     {
+        public const string MimeJson = "application/json";
+
         private ILogger _logger;
-        private HttpClient HttpClient;
         private string Endpoint;
 
         public ILogger Logger {
@@ -26,8 +27,7 @@ namespace HotelsWizard.Connector.Rest
             set { _logger = value; }
         }
 
-        public RestClient(String endpoint, HttpClient httpClient) {
-            HttpClient = httpClient == null ? new HttpClient() : httpClient;
+        public RestClient(String endpoint) {
             Endpoint = endpoint;
         }
 
@@ -43,7 +43,7 @@ namespace HotelsWizard.Connector.Rest
             using (var client = new HttpClient()) {
                 client.BaseAddress = new Uri(Endpoint);
                 client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeJson));
 
                 var requestUri = path;
                 if (query != null) {

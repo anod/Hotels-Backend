@@ -10,7 +10,7 @@ namespace HotelsWizard.Models.Response
 
         public Meta Meta;
 
-        public OrderInfo.Order Order;
+        public Order Order;
     }
 
 }
