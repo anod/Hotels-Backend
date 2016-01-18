@@ -7,7 +7,7 @@ using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNet.Mvc;
 
-namespace HotelsWizard.Connector {
+namespace HotelsWizard.Connector.Rest {
     // You may need to install the Microsoft.AspNet.Http.Abstractions package into your project
     public class RestExceptionHandlerMiddleware {
         private readonly RequestDelegate _next;

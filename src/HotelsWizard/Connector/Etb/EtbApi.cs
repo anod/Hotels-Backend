@@ -12,12 +12,10 @@ using HotelsWizard.Connector;
 using System.Net;
 using System.Threading.Tasks;
 using System.IO;
-//using System.Net.Http.Formatting;
 
-using Newtonsoft.Json;
-using System.Net.Http.Headers;
-using Microsoft.AspNet.Http;
+
 using Microsoft.Extensions.Logging;
+using HotelsWizard.Connector.Rest;
 
 namespace HotelsWizard.Connector.Etb
 {
@@ -32,7 +30,7 @@ namespace HotelsWizard.Connector.Etb
         const string PATH_ORDERS = "/v1/orders";
 
         const int LIMIT = 15;
-        private HttpClient HttpClient;
+        private RestClient RestClient;
 
         private EtbApiConfig Config;
 
@@ -57,7 +55,7 @@ namespace HotelsWizard.Connector.Etb
         public EtbApi(EtbApiConfig config, HttpClient httpClient)
         {
             Config = config;
-            HttpClient = httpClient == null ? new HttpClient() : httpClient;
+            RestClient = new RestClient(config.Endpoint, httpClient == null ? new HttpClient() : httpClient);
             //mHttpClient.interceptors().add(0, mRequestInterceptor);
         }
 
@@ -160,7 +158,7 @@ namespace HotelsWizard.Connector.Etb
         {
             query["apiKey"] = Config.ApiKey;
             query["campaignId"] = Config.CampaignId.ToString();
-            return await request<SearchResponse>(PATH_SEARCH, query);
+            return await RestClient.Get<SearchResponse>(PATH_SEARCH, query);
         }
 
         public async Task<DetailsResponse> Details(int id, HotelRequest hotelRequest) {
@@ -171,7 +169,7 @@ namespace HotelsWizard.Connector.Etb
         public async Task<DetailsResponse> Details(int id, QueryCollection query) {
             query["apiKey"] = Config.ApiKey;
             query["campaignId"] = Config.CampaignId.ToString();
-            return await request<DetailsResponse>(PATH_ACCOMMODATIONS + '/' + id, query);
+            return await RestClient.Get<DetailsResponse>(PATH_ACCOMMODATIONS + '/' + id, query);
         }
 
         public async Task<RatesResponse> Rates(int id, HotelRequest hotelRequest) {
@@ -182,7 +180,7 @@ namespace HotelsWizard.Connector.Etb
         public async Task<RatesResponse> Rates(int id, QueryCollection query) {
             query["apiKey"] = Config.ApiKey;
             query["campaignId"] = Config.CampaignId.ToString();
-            return await request<RatesResponse>(PATH_ACCOMMODATIONS + '/' + id + "/rates", query);
+            return await RestClient.Get<RatesResponse>(PATH_ACCOMMODATIONS + '/' + id + "/rates", query);
         }
 
         private QueryCollection HotelsRequestToQuery(HotelRequest request) {
@@ -242,44 +240,10 @@ namespace HotelsWizard.Connector.Etb
                 path = "confirmation/" + id;
             }
 
-            return await request<OrderResponse>(PATH_ORDERS+'/'+path, query);
+            return await RestClient.Get<OrderResponse>(PATH_ORDERS+'/'+path, query);
         }
 
-        private async Task<T> request<T>(String path, IReadableStringCollection query) {
-            using (var client = new HttpClient()) {
-                client.BaseAddress = new Uri(Config.Endpoint);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                var requestUri = path + '?' + query.ToString();
-                if (Logger != null) {
-                    Logger.LogInformation("[EtbApi] Request: {0}{1}", Config.Endpoint, requestUri);
-                }
-                var response = await client.GetAsync(requestUri);
-                if (response.IsSuccessStatusCode) {
-                    var stream = await response.Content.ReadAsStreamAsync();
-                    using (StreamReader sr = new StreamReader(stream))
-                    using (JsonReader reader = new JsonTextReader(sr)) {
-                        JsonSerializer serializer = new JsonSerializer();
-                        T responseObject = serializer.Deserialize<T>(reader);
-
-                        return responseObject;
-                    }
-                } else if (response.StatusCode < HttpStatusCode.InternalServerError) {
-                    var stream = await response.Content.ReadAsStreamAsync();
-                    using (StreamReader sr = new StreamReader(stream))
-                    using (JsonReader reader = new JsonTextReader(sr)) {
-                        JsonSerializer serializer = new JsonSerializer();
-                        ErrorResponse errorObject = serializer.Deserialize<ErrorResponse>(reader);
-                        throw new RestException(errorObject);
-                    }
-                } else {
-                    ErrorResponse errorObject = new ErrorResponse();
-                    errorObject.Meta = new ErrorMeta((int)response.StatusCode, 0, "Generic error has occurred on the server.");
-                    throw new RestException(errorObject);
-                }
-            }
-        }
+       
 
 
         //     @POST(PATH_ORDERS + "/")

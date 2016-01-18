@@ -1,7 +1,7 @@
 using System;
 using HotelsWizard.Models.Response;
 
-namespace HotelsWizard.Connector {
+namespace HotelsWizard.Connector.Rest {
     
     class RestException : Exception {
         

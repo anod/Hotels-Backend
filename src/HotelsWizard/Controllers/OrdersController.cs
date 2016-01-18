@@ -4,6 +4,7 @@ using HotelsWizard.Connector.Etb.Utils;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using HotelsWizard.Connector;
+using HotelsWizard.Connector.Rest;
 
 namespace HotelsWizard.Controllers
 {
